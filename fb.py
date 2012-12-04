@@ -2,6 +2,8 @@
 #
 # Wesley K Sun
 #
+# David Tuber
+#
 # Script that lists your friends in some kind of order, probably ranked by amount of interactions
 # It still has issues with dealing with unicode
 #
