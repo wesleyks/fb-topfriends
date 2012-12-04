@@ -33,16 +33,19 @@ class Facebook():
 		a = usock.read()
 		if "logout" in a:
 			print "Logged in."
-
 			return a
 		else:
-				print "failed login"
-				print usock.read()
-				sys.exit()
-
-
-f = Facebook()
-a = f.login()
+			print "failed login"
+			print usock.read()
+			sys.exit()
+f = None
+a = None
+if len(sys.argv) > 1:
+	with open(sys.argv[1],'r') as f:
+		a = f.read()
+else:
+	f = Facebook()
+	a = f.login()
 
 start = a.find('OrderedFriendsListInitialData')
 start = a.find('list', start)
