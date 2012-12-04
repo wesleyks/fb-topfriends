@@ -47,14 +47,14 @@ class Facebook():
 f = Facebook()  #gets the Facebook class setup
 a = f.login()	#should return the html data from facebook
 
-map = mmap.mmap(a.fileno(), 0)
+#map = mmap.mmap(a.fileno(), 0) don't need this anymore
 start = map.find('OrderedFriendsListInitialData')
 start = map.find('list',start)
 start = map.find('[',start) + 1
 end = map.find(']',start)
-map.seek(start)
+#map.seek(start) or this
 #read the string and parse into array
-idstring = map.read(end-start)
+idstring = map[start:end]
 idstring = idstring.translate(None,'\n"')
 ids = idstring.split(',')
 
