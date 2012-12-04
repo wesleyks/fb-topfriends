@@ -8,7 +8,6 @@
 
 import urllib2
 import string
-import mmap
 import json
 import sys
 import re
