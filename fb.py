@@ -8,62 +8,58 @@
 # It still has issues with dealing with unicode
 #
 
-import urllib2
-import string
-import json
-import sys
-import re
-import os
-import getpass
-import cookielib
+import urllib2, cookielib, re, os, sys, getpass, string, json
+from bs4 import BeautifulSoup
 
-ids = None
 class Facebook():
 	def __init__(self):
-		self.email = raw_input("Facebook email address: ")
+		self.email = raw_input("What's your email? ")
 		self.password = getpass.getpass()
 		cj = cookielib.CookieJar()
 		opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-		opener.addheaders =  [('Referer', 'http://login.facebook.com/login.php'),
+		opener.addheaders = [('Referer', 'http://login.facebook.com/login.php'),
                             ('Content-Type', 'application/x-www-form-urlencoded'),
                             ('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729)')]
-        	self.opener = opener
-        def login(self):
-        	url = 'https://login.facebook.com/login.php?login_attempt=1'
-        	data = data = "locale=en_US&non_com_login=&email="+self.email+"&pass="+self.password+"&lsd=20TOl"
-        	print "connecting to facebook...\n"
-        	usock = self.opener.open('http://www.facebook.com')
-       		print "inputting your data...\n"
-        	usock = self.opener.open(url, data)
-        	
-        	a = usock.read()
+	
+		self.opener = opener
+		
+	def login(self):
+
+		url = 'https://login.facebook.com/login.php?login_attempt=1'
+		data = "locale=en_US&non_com_login=&email="+self.email+"&pass="+self.password+"&lsd=20TOl"
+		usock = self.opener.open('http://www.facebook.com')
+
+		usock = self.opener.open(url, data)
+
+		a = usock.read()
 		if "logout" in a:
-			print "login successful!"
+			print "Logged in."
+
 			return a
 		else:
-			print "login failed!  sorry...\n"
-			print usock.read()
-			sys.exit()
-# some stupid code to find and parse the array of friend id's
-f = Facebook()  #gets the Facebook class setup
-a = f.login()	#should return the html data from facebook
+				print "failed login"
+				print usock.read()
+				sys.exit()
 
-#map = mmap.mmap(a.fileno(), 0) don't need this anymore
+
+f = Facebook()
+a = f.login()
+
 start = a.find('OrderedFriendsListInitialData')
-start = a.find('list',start)
-start = a.find('[',start) + 1
-end = a.find(']',start)
-#map.seek(start) or this
-#read the string and parse into array
+start = a.find('list', start)
+start = a.find('[', start) + 1
+end = a.find(']', start)
+
+#a.seek(start)
+
 idstring = a[start:end]
-idstring = idstring.translate(None,'\n"')
+idstring = idstring.translate(None, '\n"')
 ids = idstring.split(',')
 
 print "Number of entries: " + str(len(ids))
 
-#query the facebook graph api
 for i in range(len(ids)):
-	url = "https://graph.facebook.com/" + ids[i] + "?fields=name"
+	url = "https://graph.facebook.com/"+ids[i]+"?fields=name"
 	try:
 		request = urllib2.urlopen(url)
 		jstring = request.read()
