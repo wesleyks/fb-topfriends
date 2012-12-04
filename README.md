@@ -3,7 +3,7 @@ fb-topfriends
 
 Not sure what it lists. Top stalkers? Or friends you interact with the most.
 
-# How to use
+## How to use
 
 - go to your facebook home page
 - right click the page and click "view page source"
