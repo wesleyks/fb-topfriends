@@ -3,7 +3,7 @@ fb-topfriends
 
 **Uses Python 2.7**
 
-Not sure what it lists. Top stalkers? Or friends you interact with the most?
+Prints a list of your friends ordered by how much you interact with them.
 
 ## How to use
 
