@@ -9,7 +9,6 @@
 #
 
 import urllib2, cookielib, re, os, sys, getpass, string, json
-from bs4 import BeautifulSoup
 
 class Facebook():
 	def __init__(self):
