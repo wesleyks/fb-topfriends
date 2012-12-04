@@ -1,3 +1,11 @@
+# fb.py
+#
+# Wesley K Sun
+#
+# Script that lists your friends in some kind of order, probably ranked by amount of interactions
+# It still has issues with dealing with unicode
+#
+
 import urllib2
 import string
 import mmap
@@ -5,10 +13,10 @@ import json
 import sys
 
 ids = None
-
+path = sys.argv[1]
 
 # some stupid code to find and parse the array of friend id's
-with open ('source.txt','r+') as f:
+with open (path,'r+') as f:
 	map = mmap.mmap(f.fileno(), 0)
 	start = map.find('OrderedFriendsListInitialData')
 	start = map.find('list',start)
@@ -22,6 +30,7 @@ with open ('source.txt','r+') as f:
 
 print "Number of entries: " + str(len(ids))
 
+#query the facebook graph api
 for i in range(len(ids)):
 	url = "https://graph.facebook.com/" + ids[i] + "?fields=name"
 	try:
