@@ -8,7 +8,7 @@
 # It still has issues with dealing with unicode
 #
 
-import urllib2, cookielib, re, os, sys, getpass, string, json
+import urllib2, cookielib, sys, getpass, json
 
 class Facebook():
 	def __init__(self):
@@ -61,11 +61,11 @@ ids = idstring.split(',')
 print "Number of entries: " + str(len(ids))
 
 for i in range(len(ids)):
-	url = "https://graph.facebook.com/"+ids[i]+"?fields=name"
+	url = "https://graph.facebook.com/" + ids[i] + "?fields=name"
 	try:
 		request = urllib2.urlopen(url)
 		jstring = request.read()
 		obj = json.loads(jstring)
 		print str(i+1) + ":\t" + obj['name']
 	except urllib2.HTTPError, e:
-		print "Error code " + str(e.code) + " when getting user " + ids[i] + " Reason: " + e.read()
+		print str(i+1) + ": Error code " + str(e.code) + " when getting user " + ids[i] + " Reason: " + e.read()
